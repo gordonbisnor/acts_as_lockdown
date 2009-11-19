@@ -1,0 +1,28 @@
+ActsAsLockdown
+=============
+
+Allows the lockdown of specified attributes when a record enters a certain state machine state. If for example a record beings in the "pending" state and then enters a "published" state, at that point it may be necessary to insure that a certain number of attributes are frozen from change. Works by block the setter method if the record responds a query about the record state to e.g. self.published?
+
+http://www.isnorcreative.com/blogs/35
+
+Example
+=======
+
+class Product < ActiveRecord::Base
+  acts_as_lockdown
+  lockdown "published", :price, :description
+end
+
+>> self.state
+=> "published"
+
+>> self.price
+=> "Ten Bucks"
+
+>> self.price = "Nine Bucks"
+
+PRICE HAS NOT CHANGED
+>> self.price
+=> "Nine Bucks"
+
+Copyright (c) 2009 Gordon B. Isnor, released under the MIT license
